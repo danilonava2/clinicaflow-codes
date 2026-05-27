@@ -24,11 +24,15 @@ function saveCodes(codes) {
 
 let codes = loadCodes();
 
+// Ruta de prueba
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Backend de códigos funcionando' });
+});
+
 // Generar código (solo para ti, con contraseña)
 app.post('/api/generate-code', (req, res) => {
   const { email, secret } = req.body;
   
-  // Contraseña simple para que nadie más genere códigos
   if (secret !== 'TU_CONTRASEÑA_SECRETA') {
     return res.status(401).json({ error: 'No autorizado' });
   }
@@ -48,7 +52,7 @@ app.post('/api/generate-code', (req, res) => {
   res.json({ success: true, code: code, expirationDate: expirationDate.toISOString() });
 });
 
-// Activar código (desde la app)
+// Activar código
 app.post('/api/activate', (req, res) => {
   const { code, userId } = req.body;
   
@@ -99,6 +103,6 @@ app.get('/api/check-pro', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(Servidor corriendo en http://localhost:);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
